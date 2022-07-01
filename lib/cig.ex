@@ -9,19 +9,19 @@ defmodule Cig do
     |> IO.write
   end
 
-  def parse([arg | _]), do: arg
+  def parse([language | _]), do: language
 
-  def format_url(arg) do
-    url = "https://raw.githubusercontent.com/github/gitignore/main/#{arg}.gitignore"
-    {url, arg}
+  def format_url(language) do
+    url = "https://raw.githubusercontent.com/github/gitignore/main/#{language}.gitignore"
+    {url, language}
   end
 
-  def fetch({url, arg}), do: {HTTPoison.get!(url), arg}
+  def fetch({url, language}), do: {HTTPoison.get!(url), language}
 
   def handle_response({%HTTPoison.Response{body: body, status_code: 200}, _}), do: body
-  def handle_response({%HTTPoison.Response{status_code: 404}, arg}) do
+  def handle_response({%HTTPoison.Response{status_code: 404}, language}) do
     """
-    #{arg}.gitignore not found.
+    #{language}.gitignore not found.
     Visit https://github.com/github/gitignore for available templates.
     """
   end
